@@ -2,11 +2,12 @@ import asyncio
 from infrastructure_server import server_factory
 from core._engine import AudioInput
 from fastapi import APIRouter, WebSocket
+from config import settings, message_bus_add
 
 ATTEMPTS_LIMIT = 5  # количество пропущенных чанков (после этого сокет закрывается)
 
 __all__ = ['server']
-app_router = APIRouter(tags=['audio_input'])
+app_router = APIRouter(tags=[settings.name])
 
 audio_input = AudioInput()
 queue = asyncio.Queue()  # безразмерная очередь для передачи чанков
@@ -17,6 +18,12 @@ def callback(chunk):
     # Преобразование чанка из numpy array в список (для сериализации в json)
     chunk_list = chunk.flatten().tolist() if hasattr(chunk, 'tolist') else list(chunk)
     queue.put_nowait(chunk_list)  # запись чанка в очередь
+
+
+@app_router.get('/parameters/')
+def parameters():
+    """Текущие параметры компонента"""
+    return audio_input.parameters
 
 
 @app_router.websocket('/ws')
@@ -52,7 +59,20 @@ async def websocket_endpoint(websocket: WebSocket):
         print(f'Соединение остановлено')
 
 
-server = server_factory(component=audio_input, routers_list=[app_router])
+server = server_factory(component=audio_input, routers_list=[app_router], message_bus=message_bus_add)
 
 if __name__ == '__main__':
-    server.start(port=8000, log_level='debug')
+    """Пример использования"""
+    from time import sleep
+    import threading
+
+
+    def start_server():
+        server.start(port=8000, log_level='warning')  # запуск сервера из внешних api
+
+
+    server_thread = threading.Thread(target=start_server)
+    server_thread.start()
+    input(f'Наж enter чтобы остановить сервер.\n')
+    server.stop()
+    server_thread.join(timeout=2)

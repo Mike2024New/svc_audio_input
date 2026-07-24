@@ -1,13 +1,22 @@
 import soundcard as sc
 import threading
 
-samplerate = 16000
-blocksize = 1024
+from config import settings
+
+samplerate = settings.samplerate
+blocksize = settings.blocksize
 
 
 class AudioInput:
     def __init__(self):
         self.running = False
+        self.parameters = None
+        self.parameters = {
+            'name': settings.name,
+            'device': sc.default_microphone().name,
+            'samplerate': samplerate,
+            'blocksize': blocksize,
+        }
         self._component_stop = threading.Event()
 
     def _audio_input_consumer(self, audio_input, callback):
@@ -39,6 +48,8 @@ class AudioInput:
 
 if __name__ == '__main__':
     recorder = AudioInput()
+    print(recorder.parameters)  # можно смотреть текущие настройки
+    # при запуске передать callback функцию которая будет обрабатывать чанки, например отправка по websockets
     recorder.start(callback=lambda chunk: print(chunk[:10]))
     input()
     recorder.stop()

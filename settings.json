@@ -1,0 +1,5 @@
+{
+  "name": "audio_input",
+  "samplerate": 16000,
+  "blocksize": 1024
+}

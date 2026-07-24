@@ -1,6 +1,6 @@
 [project]
 name = "audio-input-svc"
-version = "0.1.0"
+version = "0.2.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -9,4 +9,5 @@ dependencies = [
     "websockets>=16.1.1",
     "infrastructure-server @ git+https://github.com/Mike2024New/infrastructure2.git@main#subdirectory=packages/infrastructure_server",
     "infrastructure-cli-utils @ git+https://github.com/Mike2024New/infrastructure2.git@main#subdirectory=packages/infrastructure_cli_utils",
+    "infrastructure-message-bus @ git+https://github.com/Mike2024New/infrastructure2.git@main#subdirectory=packages/infrastructure_message_bus",
 ]
