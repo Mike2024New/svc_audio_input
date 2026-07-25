@@ -10,7 +10,6 @@ __all__ = [
     'settings_manager',  # менеджер настроек
     'message_bus_add',
 ]
-APP_NAME = 'audio_input'
 IS_WINDOWS = 'windows' in platform.system().lower()
 
 # для сборщика (pyinstaller)
@@ -29,6 +28,9 @@ settings_manager = get_settings_manager(
     settings_model=settings,
 )
 settings = settings_manager.settings
+
+# название приложения берется из конфигурации
+APP_NAME = settings.name
 
 # шина сообщений
 message_bus_add, message_bus_settings = message_bus_factory(

@@ -1,15 +1,16 @@
+import config
 import asyncio
 from infrastructure_server import server_factory
 from core._engine import AudioInput
 from fastapi import APIRouter, WebSocket
-from config import settings, message_bus_add
 
 ATTEMPTS_LIMIT = 5  # количество пропущенных чанков (после этого сокет закрывается)
 
-__all__ = ['server']
-app_router = APIRouter(tags=[settings.name])
+__all__ = ['component', 'routers_list']
 
-audio_input = AudioInput()
+app_router = APIRouter(tags=[config.settings.name])
+
+component = AudioInput()
 queue = asyncio.Queue()  # безразмерная очередь для передачи чанков
 stop_recorder = asyncio.Event()
 
@@ -23,7 +24,7 @@ def callback(chunk):
 @app_router.get('/parameters/')
 def parameters():
     """Текущие параметры компонента"""
-    return audio_input.parameters
+    return component.parameters
 
 
 @app_router.websocket('/ws')
@@ -32,7 +33,7 @@ async def websocket_endpoint(websocket: WebSocket):
     print("Клиент подключился")
 
     # запуск микрофона, в качестве callback функция которая добавляет чанк в очередь
-    audio_input.start(callback=callback)
+    component.start(callback=callback)
 
     try:
         # цикл бесконечно посылает чанки
@@ -50,7 +51,7 @@ async def websocket_endpoint(websocket: WebSocket):
     except Exception as err:
         print(err)
     finally:
-        audio_input.stop()
+        component.stop()
         try:
             await websocket.close()
         except (RuntimeError, Exception):
@@ -59,12 +60,19 @@ async def websocket_endpoint(websocket: WebSocket):
         print(f'Соединение остановлено')
 
 
-server = server_factory(component=audio_input, routers_list=[app_router], message_bus=message_bus_add)
+routers_list = [app_router, ]
 
 if __name__ == '__main__':
     """Пример использования"""
     from time import sleep
     import threading
+
+    server = server_factory(
+        component=component,
+        routers_list=[app_router],
+        message_bus=config.message_bus_add,
+        app_name=config.APP_NAME,
+    )
 
 
     def start_server():

@@ -1,9 +1,15 @@
 import config
 from infrastructure_builder import BuildParameters
 from infrastructure_cli_utils import CliSettings, get_cli_app
-from core import server
+from infrastructure_server import server_factory
+from core import routers_list, component
 
-# настройки сборки приложения (похватываются в cli.py)
+# Порядок настроек важен
+
+# ==========================================
+#  НАСТРОЙКА СБОРКИ ПРИЛОЖЕНИЯ (pyinstaller)
+# ==========================================
+
 build_settings = BuildParameters(
     name=config.APP_NAME,
     entry_point_path=config.ROOT_DIR / 'cli.py',
@@ -11,6 +17,22 @@ build_settings = BuildParameters(
     create_resources_symlink=False,
     open_folder=True,
 )
+
+# ==========================================
+#  НАСТРОЙКА СЕРВЕРА
+# ==========================================
+
+# настройка сервера
+server = server_factory(
+    component=component,
+    routers_list=routers_list,
+    message_bus=config.message_bus_add,
+    app_name=config.APP_NAME,
+)
+
+# ==========================================
+#  НАСТРОЙКА CLI
+# ==========================================
 
 # настройка отображаемых базовых команд
 cli_settings = CliSettings(
