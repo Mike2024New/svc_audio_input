@@ -6,8 +6,10 @@ from config import settings
 samplerate = settings.samplerate
 blocksize = settings.blocksize
 
+__all__ = ['Engine']
 
-class AudioInput:
+
+class Engine:
     def __init__(self):
         self.running = False
         self.parameters = None
@@ -47,7 +49,7 @@ class AudioInput:
 
 
 if __name__ == '__main__':
-    recorder = AudioInput()
+    recorder = Engine()
     print(recorder.parameters)  # можно смотреть текущие настройки
     # при запуске передать callback функцию которая будет обрабатывать чанки, например отправка по websockets
     recorder.start(callback=lambda chunk: print(chunk[:10]))
