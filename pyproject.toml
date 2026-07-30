@@ -1,6 +1,6 @@
 [project]
 name = "audio-input-svc"
-version = "0.5.0"
+version = "0.6.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -14,9 +14,27 @@ dependencies = [
     "infrastructure-builder",
 ]
 
-[tool.uv.sources]
-infrastructure-server = { git = "https://github.com/Mike2024New/infrastructure2.git", subdirectory = "packages/infrastructure_server", rev = "d8b10951628615ae63da5637b1cb57bf49ff61dd" }
-infrastructure-cli-utils = { git = "https://github.com/Mike2024New/infrastructure2.git", subdirectory = "packages/infrastructure_cli_utils", rev = "d8b10951628615ae63da5637b1cb57bf49ff61dd" }
-infrastructure-settings-manager = { git = "https://github.com/Mike2024New/infrastructure2.git", subdirectory = "packages/infrastructure_settings_manager", rev = "d8b10951628615ae63da5637b1cb57bf49ff61dd" }
-infrastructure-message-bus = { git = "https://github.com/Mike2024New/infrastructure2.git", subdirectory = "packages/infrastructure_message_bus", rev = "d8b10951628615ae63da5637b1cb57bf49ff61dd" }
-infrastructure-builder = { git = "https://github.com/Mike2024New/infrastructure2.git", subdirectory = "packages/infrastructure_builder", rev = "d8b10951628615ae63da5637b1cb57bf49ff61dd" }
+[tool.uv.sources.infrastructure-server]
+git = "https://github.com/Mike2024New/infrastructure2.git"
+subdirectory = "packages/infrastructure_server"
+rev = "d8b10951628615ae63da5637b1cb57bf49ff61dd"
+
+[tool.uv.sources.infrastructure-cli-utils]
+git = "https://github.com/Mike2024New/infrastructure2.git"
+subdirectory = "packages/infrastructure_cli_utils"
+rev = "d8b10951628615ae63da5637b1cb57bf49ff61dd"
+
+[tool.uv.sources.infrastructure-settings-manager]
+git = "https://github.com/Mike2024New/infrastructure2.git"
+subdirectory = "packages/infrastructure_settings_manager"
+rev = "d8b10951628615ae63da5637b1cb57bf49ff61dd"
+
+[tool.uv.sources.infrastructure-message-bus]
+git = "https://github.com/Mike2024New/infrastructure2.git"
+subdirectory = "packages/infrastructure_message_bus"
+rev = "d8b10951628615ae63da5637b1cb57bf49ff61dd"
+
+[tool.uv.sources.infrastructure-builder]
+git = "https://github.com/Mike2024New/infrastructure2.git"
+subdirectory = "packages/infrastructure_builder"
+rev = "d8b10951628615ae63da5637b1cb57bf49ff61dd"
