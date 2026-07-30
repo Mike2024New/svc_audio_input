@@ -1,20 +1,26 @@
-import os
 import sys
 import subprocess
-from pathlib import Path
 
 """
-Стандарт : пусковой стартовый скрипт, для сборки зависимостей и скачивания необходимых компонентов.
+Пусковой стартовый скрипт, для сборки зависимостей и скачивания необходимых компонентов.
+Важно! Перед запуском должно быть создано виртуальное окружение, и название папки должно быть .venv
 """
 
-# удалить старый uv lock, так как он может помешать обновлению
-uv_lock_path = Path('./uv.lock')
-if uv_lock_path.exists():
-    os.remove(uv_lock_path)
 
-cmd = [sys.executable, '-m', 'pip', 'install', 'uv']
-subprocess.run(cmd, shell=False)
+def start():
+    print(f'1.Установка uv')
+    cmd = [sys.executable, '-m', 'pip', 'install', 'uv']
+    subprocess.run(cmd, shell=False)
 
-# загрузка всех необходимых пакетов
-cmd = [sys.executable, '-m', 'uv', 'sync']
-subprocess.run(cmd, shell=False)
+    print(f'2.Установка пакетов.')
+    cmd = [sys.executable, '-m', 'uv', 'sync']
+    subprocess.run(cmd, shell=False)
+
+    print('3.Вывод справки по cli.')
+    from cli import start
+
+    start()
+
+
+if __name__ == '__main__':
+    start()

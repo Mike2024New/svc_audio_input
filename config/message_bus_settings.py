@@ -32,3 +32,4 @@ message_bus_add, message_bus_settings = message_bus_factory(
 
 if __name__ == '__main__':
     message_bus_add(subcomponent='a', message='start', level='warning')
+    message_bus_settings.set_trace_id(trace_id='#000')

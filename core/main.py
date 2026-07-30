@@ -43,7 +43,7 @@ class Engine:
 
     def stop(self):
         """Остановка записи микрофона"""
-        if self.running is not None:
+        if not self.running:
             self._component_stop.set()
             self.running = False
 

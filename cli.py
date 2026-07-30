@@ -1,4 +1,9 @@
 from config.cli_settings import app
 
-if __name__ == '__main__':
+
+def start():
     app()
+
+
+if __name__ == '__main__':
+    start()

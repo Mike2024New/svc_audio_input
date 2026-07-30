@@ -3,6 +3,7 @@ from config import paths_settings
 from config import settings, settings_manager
 from config.server_settings import server
 from config.build_settings import build_settings
+from config.message_bus_settings import message_bus_settings
 
 # ==========================================
 #  НАСТРОЙКА CLI
@@ -19,6 +20,7 @@ cli_settings = CliSettings(
     enable_build_command=True,
     enable_run_test=False,
     enable_run_command=False,
+    enable_register_sync=True,
 )
 
 # создание cli интерфейса с пробросом необходимых настроек
@@ -31,4 +33,5 @@ app = get_cli_app(
     settings=settings,
     settings_manager=settings_manager,
     server=server,
+    trace_id_callback=lambda trace_id: message_bus_settings.set_trace_id(trace_id=trace_id)
 )
